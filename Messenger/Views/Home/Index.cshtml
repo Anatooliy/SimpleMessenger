@@ -112,18 +112,16 @@
         // Edit message       
         $(document).on("click", ".js-edit-message-post", function (e) {
             e.preventDefault();
-            console.log("dfdfdfdf");
+            
             var $currentButton = $(this);
             var $currentMessageBlock = $(this).closest(".item-block");
             var formData = $(this).closest("form").serialize();        
-            console.log(formData);
+           
             $.ajax({
                 url: '@Url.Action("EditMessage")',
                 type: "POST",
                 data: formData,
-                success: function (responseText) {
-                    console.log(responseText);
-                    console.log("bbbbbbbbbbbbbbb");
+                success: function (responseText) {                    
                     if (responseText != "false") {
                         $currentMessageBlock.find(".item-text").text(responseText);
 
@@ -153,7 +151,30 @@
                     }                        
                 }
             });            
-        });        
+        });   
+
+        // Cancels
+        // Edit cansel
+        $(document).on("click", ".js-cancel-edit-message", function () {
+            var $currentButton = $(this);
+            var $currentMessageBlock = $(this).closest(".item-block");
+
+            $currentMessageBlock.find("form").slideUp("slow", function () {
+                $currentButton.closest(".item-block").find(".js-edit-message").css("display", "inline");
+                $(this).remove();
+            });
+        });
+
+        //add cancel
+        $(document).on("click", ".js-cancel-add-message", function () {
+            var $currentButton = $(this);
+            var $currentMessageBlock = $(this).closest(".partial-create");
+
+            $currentMessageBlock.slideUp("slow", function () {
+                $(".add-message-button").css("display", "inline");
+                $(this).empty();
+            });
+        });
     </script>
 
     @Scripts.Render("~/bundles/jqueryval")
