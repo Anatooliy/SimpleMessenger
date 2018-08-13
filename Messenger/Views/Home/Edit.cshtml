@@ -1,0 +1,31 @@
+﻿@model Messenger.Models.Message
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">           
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.MessagesText, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MessagesText, "", new { @class = "text-danger" })
+            </div>
+        </div>       
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="center-block">
+                    <input type="submit" value="Edit" class="btn btn-default js-edit-message-post" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

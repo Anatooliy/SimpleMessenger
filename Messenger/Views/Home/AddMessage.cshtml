@@ -1,0 +1,19 @@
+﻿@model Messenger.Models.Message
+
+<div class="col-md-12">
+    <div class="item-block center-block">        
+        <div class="item-author">
+            @ViewBag.UserName
+        </div>
+        <div class="item-nav">
+            <a class="js-edit-message" href="#" data-id="@Model.Id">Edit</a> |
+            <a class="js-remove-message" href="#" data-id="@Model.Id">Delete</a>            
+        </div>        
+        <div class="item-text">
+            @Html.DisplayFor(model => model.MessagesText)
+        </div>
+        <div class="item-date">
+            @Html.DisplayFor(model => model.Date)
+        </div>        
+    </div>
+</div>

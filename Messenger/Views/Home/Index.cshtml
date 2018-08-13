@@ -1,0 +1,160 @@
+﻿@model IEnumerable<Messenger.Models.Message>
+
+@{
+    ViewBag.Title = "Messages";
+}
+
+<h2>Messages</h2>
+
+<div class="row messages-list">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-12 item-wrap">
+            <div class="item-block center-block">
+                <div class="item-author">
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </div>
+                @if (ViewBag.UserName == item.User.UserName)
+                {
+                <div class="item-nav">
+                    <a class="js-edit-message" href="#" data-id="@item.Id">Edit</a> |
+                    <a class="js-remove-message" href="#" data-id="@item.Id">Delete</a>                    
+                </div>
+                }
+                <div class="item-text">
+                    @Html.DisplayFor(modelItem => item.MessagesText)
+                </div>
+                <div class="item-date">
+                    @Html.DisplayFor(modelItem => item.Date)
+                </div>                
+            </div>
+        </div>
+    }
+
+     <div class="col-md-12">
+        <div class="create-block center-block">
+            <div class="add-message-button-wrap">
+                <a class="js-add-create-partial add-message-button btn btn-outline-secondary btn-lg">Add Message</a>
+            </div>
+            <div class="partial-create"></div>                
+        </div>
+     </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        // Open Create partial
+        $(document).on("click", ".js-add-create-partial", function (e) {
+            e.preventDefault();
+
+            $currentButton = $(this);
+
+            $.ajax({
+                url: '@Url.Action("Create")',
+                type: "GET",
+                success: function (html) {
+                    $currentButton.css("display", "none");
+
+                    var $partialCreateBlock = $(".partial-create");
+
+                    $partialCreateBlock.html(html);
+                    $partialCreateBlock.slideDown("slow");                  
+                }
+            });            
+        });
+
+        // Add message
+        $(document).on("click", ".js-add-message", function (e) {
+            e.preventDefault();
+
+            var $currentButton = $(this);
+            var formData = $(this).closest("form").serialize();            
+           
+            $.ajax({
+                url: '@Url.Action("AddMessage")',
+                type: "POST",
+                data: formData,
+                success: function (html) {
+                    $(".messages-list").prepend(html);
+
+                    $(".add-message-button").css("display", "inline");
+
+                    var $partialCreateBlock = $(".partial-create");
+
+                    $partialCreateBlock.empty();
+                    $partialCreateBlock.slideUp("slow", function () {
+                        $partialCreateBlock.empty();
+                    });
+                }
+            });            
+        });
+
+        // Open Edit partial
+        $(document).on("click", ".js-edit-message", function (e) {
+            e.preventDefault();
+
+            var $currentButton = $(this);
+            var $currentMessageBlock = $(this).closest(".item-block");
+            var messageId = $currentButton.data("id");         
+           
+            $.ajax({
+                url: '@Url.Action("Edit")',
+                type: "GET",
+                data: { 'id': messageId },
+                success: function (html) {
+                    $currentButton.css("display", "none");
+                    $currentMessageBlock.append(html);
+                    $currentMessageBlock.find("form").slideDown("slow");                  
+                }
+            });            
+        });
+
+        // Edit message       
+        $(document).on("click", ".js-edit-message-post", function (e) {
+            e.preventDefault();
+            console.log("dfdfdfdf");
+            var $currentButton = $(this);
+            var $currentMessageBlock = $(this).closest(".item-block");
+            var formData = $(this).closest("form").serialize();        
+            console.log(formData);
+            $.ajax({
+                url: '@Url.Action("EditMessage")',
+                type: "POST",
+                data: formData,
+                success: function (responseText) {
+                    console.log(responseText);
+                    console.log("bbbbbbbbbbbbbbb");
+                    if (responseText != "false") {
+                        $currentMessageBlock.find(".item-text").text(responseText);
+
+                        $currentMessageBlock.find("form").slideUp("slow", function () {
+                            $currentButton.closest(".item-block").find(".js-edit-message").css("display", "inline");
+                        }); 
+                    }                                     
+                }
+            });            
+        });
+
+        // Remove message
+        $(document).on("click", ".js-remove-message", function (e) {
+            e.preventDefault();
+
+            var $currentButton = $(this);
+            var messageId = $currentButton.data("id");         
+           
+            $.ajax({
+                url: '@Url.Action("Delete")',
+                type: "POST",
+                data: { 'id': messageId },
+                success: function (response) {                   
+                    if (response == 'true')
+                    {
+                        $currentButton.closest(".item-wrap").remove();
+                    }                        
+                }
+            });            
+        });        
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

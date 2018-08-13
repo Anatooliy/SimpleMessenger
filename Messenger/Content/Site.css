@@ -1,0 +1,103 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select {
+    max-width: 280px;
+}
+
+
+
+/* messages list*/
+.item-block {
+    padding: 10px;
+    border: 1px solid #eeeeee;
+    border-radius: 3px;
+    margin-bottom: 15px;
+}
+
+.item-block .item-date {
+    text-align: right;
+}
+
+.item-block .item-text {
+    background-color: #f9f9f9;
+    margin: 5px;
+    padding: 15px;
+    border-radius: 3px;
+}
+
+.item-block form{
+    display: none;
+}
+
+.item-block .form-horizontal {
+    margin-top:15px;
+}
+
+.create-block {
+    padding: 10px;
+}
+
+.create-block textarea,
+.item-block textarea {
+    min-height: 120px;
+}
+
+.create-block .partial-create {
+    display: none;
+}
+
+.add-message-button-wrap{
+    text-align: center;
+}
+
+.add-message-button {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.add-message-button:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.item-author,
+.item-nav {
+    display: inline-block;
+    width: 49%;
+}
+
+.item-nav{
+    text-align: right;
+}
+
+@media (min-width: 992px) {
+    .item-block, .create-block {
+    width: 90%;
+    }
+}
+
+
+/* login */
+.register-link{
+    margin-left: 15px;
+}
